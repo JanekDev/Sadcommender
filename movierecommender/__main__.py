@@ -12,7 +12,7 @@ def main():
     args = parser.parse_args()
     user_data = utils.read_json(args.json)
     recommended = app.recommend_movies(user_data)
-    # add _recommended to the end of file name
+    logging.info(f"Recommended movies are {recommended['recommended_movies']}")
     utils.write_json(file_path=args.json[:-5] + "_recommended.json", data=recommended)
 
 if __name__ == "__main__":

@@ -27,12 +27,13 @@ class Recommender:
         else:
             logging.error("No association rules found")
         recommendations["recommended_movies"] = list(set(recommendations["recommended_movies"]))
+        recommendations["recommended_movies"] = recommendations["recommended_movies"][:10]
         return recommendations
     
     
     def prepare_data(self, good_rating_thresh: float = 4.5) -> None:
         df_movies = self.data_movies
-        df_ratings = self.data_ratings[:10000]
+        df_ratings = self.data_ratings
         df_ratings = df_ratings[df_ratings['rating'] >= good_rating_thresh]
         df_ratings = df_ratings.drop(columns=['timestamp'])
         df_ratings = df_ratings.merge(df_movies, on='movieId')
@@ -48,8 +49,7 @@ class Recommender:
         te = TransactionEncoder()
         te_ary = te.fit_transform(df['watched_movies'].tolist())
 
-        frequent_itemsets = apriori(pd.DataFrame(te_ary, columns=te.columns_), min_support=0.1, use_colnames=True)
+        frequent_itemsets = apriori(pd.DataFrame(te_ary, columns=te.columns_), min_support=0.04, use_colnames=True)
         self.ar = association_rules(frequent_itemsets, metric="lift")
         self.ar.to_csv('datasets/association_rules.csv', index=False)
-        print(self.ar)
         return self.ar
