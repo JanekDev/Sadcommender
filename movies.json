@@ -2,10 +2,13 @@
     "user": "John Doe",
     "liked_movies": [
       {
-        "title": "Pulp Fiction (1994)",
-        "year": 2010,
-        "genre": ["Comedy"],
-        "director": "Christopher Nolan"
+        "title": "Raiders of the Lost Ark (Indiana Jones and the Raiders of the Lost Ark) (1981)"
+      },
+      {
+        "title": "Terminator, The (1984)"
+      },
+      {
+        "title": "Lord of the Rings: The Fellowship of the Ring, The (2001)"
       }
     ]
   }

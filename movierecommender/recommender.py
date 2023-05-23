@@ -5,10 +5,8 @@ import os
 import logging
 
 class Recommender:
-    def __init__(self, ar_path: str = None, data_path: str = None) -> None:
-        if ar_path:
-            self.ar = pd.read_csv(ar_path)
-        elif data_path:
+    def __init__(self, data_path: str = None) -> None:
+        if data_path:
             self.data_movies = pd.read_csv(os.path.join(data_path, 'movies.csv'))
             self.data_ratings = pd.read_csv(os.path.join(data_path, 'ratings.csv'))
             self.create_association_rules(self.prepare_data())
@@ -27,7 +25,9 @@ class Recommender:
         else:
             logging.error("No association rules found")
         recommendations["recommended_movies"] = list(set(recommendations["recommended_movies"]))
-        recommendations["recommended_movies"] = recommendations["recommended_movies"][:10]
+        recommendations["recommended_movies"] = sorted(recommendations["recommended_movies"], key=lambda x: self.ar[self.ar['consequents'] == frozenset([x])]['lift'].tolist()[0], reverse=True)
+        if len(recommendations["recommended_movies"]) > 10:
+            recommendations["recommended_movies"] = recommendations["recommended_movies"][:10]
         return recommendations
     
     
@@ -49,7 +49,6 @@ class Recommender:
         te = TransactionEncoder()
         te_ary = te.fit_transform(df['watched_movies'].tolist())
 
-        frequent_itemsets = apriori(pd.DataFrame(te_ary, columns=te.columns_), min_support=0.04, use_colnames=True)
-        self.ar = association_rules(frequent_itemsets, metric="lift")
-        self.ar.to_csv('datasets/association_rules.csv', index=False)
+        frequent_itemsets = apriori(pd.DataFrame(te_ary, columns=te.columns_), min_support=0.06, use_colnames=True)
+        self.ar = association_rules(frequent_itemsets, metric="lift", min_threshold=2)
         return self.ar
