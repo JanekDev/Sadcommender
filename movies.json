@@ -1,0 +1,24 @@
+{
+    "user": "John Doe",
+    "liked_movies": [
+      {
+        "title": "Godfather, The (1972)",
+        "year": 1994,
+        "genre": ["Comedy"],
+        "director": "Frank Darabont"
+      },
+      {
+        "title": "Pulp Fiction (1994)",
+        "year": 2010,
+        "genre": ["Comedy"],
+        "director": "Christopher Nolan"
+      },
+      {
+        "title": "Forrest Gump (1994)",
+        "year": 1994,
+        "genre": ["Comedy"],
+        "director": "Quentin Tarantino"
+      }
+    ]
+  }
+  
